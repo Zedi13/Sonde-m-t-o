@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mon Site Web</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background">
+        <img class="img_nuage" src="image_6.png" alt="Image de fond">
+        <div class="control_panel">
+            <div class="ligne1"></div>
+            <div class="humidite">
+                <p>60%</p>
+            </div>
+            <div class="txt_humidite">
+                <p>Humidité :</p>
+            </div>
+
+            <div class="temperature">
+                <p>25.3°C</p>
+            </div>
+            <div class="txt_temperature">
+                <p>Température :</p>
+            </div>
+
+            <div class="pression">
+                <p>1013 hPa</p>
+            </div>
+            <div class="txt_pression">
+                <p>Pression :</p>
+            </div>
+
+            <div class="ligne2"></div>
+
+            <div class="date">
+                <p class="current-date"></p>
+            </div>
+            <div class="time">
+                <p class="current-time"></p>
+            </div>
+            <button class="btn_rafraichir" onclick="refreshPage()">Rafraîchir</button>
+            <div class="img_fleche" onclick="toggleControlPanel()">
+                <img src="fleche.png" alt="Bouton Image">
+            </div>
+        </div>
+        </div>
+
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
