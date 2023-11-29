@@ -1,19 +1,19 @@
 from flask import Flask, request, jsonify
 import mysql.connector
 from env import *
+import os 
 
 plop = 'a'
 
 app = Flask(__name__)
 
 db = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USER,
-    password=DB_PASSWORD,
-    database=DB_DATABASE,
-    
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_DATABASE"),
+    port=os.getenv("DB_PORT")
 )
-
 cursor = db.cursor()
 
 @app.route('/releves', methods=['GET', 'POST', 'PUT', 'DELETE'])
