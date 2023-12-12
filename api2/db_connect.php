@@ -1,8 +1,8 @@
 <?php
 $dburl="localhost";
 $dblogin="root";
-$dbpass="pi";
-$dbtable="cesi_bdd";
+$dbpass="";
+$dbtable="table_meteo";
 
 try 
 	{
@@ -17,18 +17,6 @@ catch (PDOException $e)
 	}
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Température et Pression</title>
+</head>
+<body>
+    <div class="temperature" id="temperature-info">
+        <p>temperature:</p>
+    </div>
+    <script>
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://127.0.0.1:5000/releves");
+        xhr.send();
+        xhr.responseType = "json";
+        xhr.onload = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = xhr.response;
+                console.log(data); // Vérifiez la structure des données dans la console
+
+                // Manipulation du DOM pour afficher les données
+                const temperatureInfo = document.getElementById("temperature-info");
+                const humidityInfo = document.getElementById("humidity-info");
+
+                if (data.length > 0) {
+                    const lastData = data[data.length - 1];
+                    const temperature = lastData[1];  // Index 0 pour la température
+                    const humidity = lastData[0];     // Index 1 pour l'humidité
+                    temperatureInfo.innerHTML = <p>Température : ${temperature} °C</p>;
+                    humidityInfo.innerHTML = <p>Humidité : ${humidity} %</p>;
+                } else {
+                    temperatureInfo.innerHTML = "<p>Température : N/A</p>";
+                    humidityInfo.innerHTML = "<p>Humidité : N/A</p>";
+                }
+            } else {
+                console.log(Error : ${xhr.status});
+            }
+        };
+    </script>
+</body>
+</html>
