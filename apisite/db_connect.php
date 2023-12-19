@@ -1,8 +1,8 @@
 <?php
-$dburl="localhost";
+$dburl="localhost:3306";
 $dblogin="root";
 $dbpass="";
-$dbtable="table_meteo";
+$dbtable="base";
 
 try 
 	{
@@ -13,13 +13,8 @@ try
 	}
 catch (PDOException $e)
 	{
+		echo "Erreur connexion BDD : ".$e->getMessage()."";
 	echo "Merci de revenir d'ici quelques heures.";
 	}
 
 ?>
-
-
-
-
-
-
