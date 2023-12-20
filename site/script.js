@@ -76,28 +76,18 @@ function toggleControlPanel() {
     }
 }
 
-// Fonction pour charger les relevés dans le tableau
-function chargerReleves() {
-    // Vérifier si l'élément avec l'ID "relevesTable" existe
+function chargerReleves(donnees) {
     var tableBody = document.getElementById("relevesTable");
 
-    // Vérifier si l'élément existe avant de procéder
     if (tableBody) {
         tableBody = tableBody.getElementsByTagName('tbody')[0];
 
-        // Supprimer les lignes existantes du tableau
         if (tableBody) {
             tableBody.innerHTML = "";
 
-            // Remplacer cette partie avec la logique pour récupérer les données depuis votre API
-            // Exemple statique pour les fins de démonstration
-            var donneesSimulees = [
-                { heure: '12:00', temperature: '25.3', pression: '1013', humidite: '60' },
-                // Ajoutez d'autres données ici...
-            ];
-
             // Ajouter les données au tableau
-            donneesSimulees.forEach(function (releve) {
+            donnees.forEach(function (releve) {
+                console.log(releve); // Vérifiez chaque objet releve
                 var row = tableBody.insertRow(-1);
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
@@ -112,19 +102,28 @@ function chargerReleves() {
     }
 }
 
+
 // Charger les relevés au chargement de la page
-window.onload = chargerReleves;
+window.onload = function () {
+    chargerReleves(); // Si vous voulez également charger les relevés statiques
+    chargerDonneesApi();
+};
 
 
 // Fonction pour effectuer une requête AJAX
 function chargerDonneesApi() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'api.php', true);
+    xhr.open('GET', 'http://192.168.252.119/apisite/get_meteo.php', true); // Mettez à jour l'URL ici
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            // Analyser les données JSON
-            var donnees = JSON.parse(xhr.responseText);
-            afficherResultat(donnees);
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                // Analyser les données JSON
+                var donnees = JSON.parse(xhr.responseText);
+                afficherResultat(donnees); // Appel à la fonction d'affichage
+                chargerReleves(donnees); // Appel à la fonction pour charger les relevés
+            } else {
+                console.error("Erreur de la requête AJAX : " + xhr.status);
+            }
         }
     };
     xhr.send();
@@ -136,9 +135,19 @@ function afficherResultat(data) {
     var temperatureDiv = document.getElementById('temperatureDiv');
     var pressionDiv = document.getElementById('pressionDiv');
 
-    humiditeDiv.innerHTML = `<p>Humidité: ${data.humidite}%</p>`;
-    temperatureDiv.innerHTML = `<p>Température: ${data.temperature}°C</p>`;
-    pressionDiv.innerHTML = `<p>Pression: ${data.pression} hPa</p>`;
+    // Vérifier si le tableau contient des éléments avant d'accéder à ses propriétés
+    if (data.length > 0) {
+        var dernierReleve = data[data.length - 1]; // Prendre le dernier relevé
+
+        humiditeDiv.innerHTML = `<p>${dernierReleve.hum}%</p>`;
+        temperatureDiv.innerHTML = `<p>${dernierReleve.temp}°C</p>`;
+        pressionDiv.innerHTML = `<p>${dernierReleve.pres} hPa</p>`;
+    } else {
+        // Le tableau est vide, afficher des valeurs par défaut ou un message d'erreur
+        humiditeDiv.innerHTML = `<p>N/A%</p>`;
+        temperatureDiv.innerHTML = `<p>N/A°C</p>`;
+        pressionDiv.innerHTML = `<p>N/AhPa</p>`;
+    }
 }
 
 // Charger les données au chargement de la page
